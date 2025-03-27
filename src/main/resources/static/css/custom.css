@@ -1,0 +1,1346 @@
+/**
+ * Hoja de estilos para Gemini Wrapper
+ * Incluye estilos para modo oscuro, blanco, animaciones y elementos responsivos
+ */
+
+/* ===================================
+   VARIABLES DEL TEMA
+   =================================== */
+:root {
+    /* Variables del tema cyberpunk (valores predeterminados) */
+    --cyberpunk-primary: #00f3ff;
+    --cyberpunk-secondary: #ff00dd;
+    --cyberpunk-accent: #9900ff;
+    --cyberpunk-bg: #0d0b1e;
+    --cyberpunk-yellow: #ffda00;
+    --neon-green: #00ff9d;
+    --neon-blue: #0055ff;
+    --neon-pink: #ff0088;
+    --dark-bg: #0d0221;
+    
+    /* Variables del tema profesional (blanco y negro elegante) */
+    --prof-primary: #000000;
+    --prof-secondary: #333333;
+    --prof-accent: #555555;
+    --prof-bg: #ffffff;
+    --prof-text: #000000;
+    --prof-light-gray: #f7f7f7;
+    --prof-border: #e0e0e0;
+    
+    /* Variables activas (inicialmente cyberpunk) */
+    --primary-color: var(--cyberpunk-primary);
+    --secondary-color: var(--cyberpunk-secondary);
+    --accent-color: var(--cyberpunk-accent);
+    --light-bg: var(--cyberpunk-bg);
+    --text-color: #f0f0f0;
+}
+
+/* ===================================
+   ESTILOS BASE
+   =================================== */
+body {
+    font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s ease;
+    background-image: 
+        linear-gradient(45deg, rgba(0, 243, 255, 0.05) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 0, 221, 0.05) 25%, transparent 25%);
+    background-size: 100px 100px;
+}
+
+.container {
+    max-width: 1000px;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: black;
+    padding: 2rem 0;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 243, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--primary-color);
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: cyber-scan 3s linear infinite;
+}
+
+@keyframes cyber-scan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Aplicar tema profesional cuando se activa la clase */
+body.professional-theme {
+    --primary-color: var(--prof-primary);
+    --secondary-color: var(--prof-secondary);
+    --accent-color: var(--prof-accent);
+    --light-bg: var(--prof-bg);
+    --text-color: var(--prof-text);
+    background-image: none !important;
+    background-color: var(--light-bg);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Configuración para asegurar que no haya brillos en el tema profesional */
+body.professional-theme * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/* Excepción para sombras sutiles que mejoran la legibilidad */
+body.professional-theme .card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Ajustes de contraste para cabecera en tema profesional */
+body.professional-theme .card-header {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Botones en cabecera con contraste */
+body.professional-theme .card-header .btn-outline-light {
+    border: 1px solid #000;
+    color: #000;
+    background-color: transparent;
+}
+
+body.professional-theme .card-header .btn-outline-light:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Badge con contraste */
+body.professional-theme .card-header .badge {
+    background-color: #eee !important;
+    color: #333 !important;
+    border: 1px solid #ccc;
+}
+
+/* Mejoras para modo oscuro profesional */
+body.professional-theme.dark-mode .card-header {
+    background-color: #1e1e1e;
+}
+
+body.professional-theme.dark-mode .card-header .btn-outline-light {
+    border-color: #fff;
+    color: #fff;
+}
+
+body.professional-theme.dark-mode .card-header .badge {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #555;
+}
+
+/* Encabezados con fuente elegante en tema profesional */
+body.professional-theme h1,
+body.professional-theme h2,
+body.professional-theme h3,
+body.professional-theme h4,
+body.professional-theme h5 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+}
+
+/* Estilos profesionales para componentes */
+body.professional-theme .card {
+    border-radius: 0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--prof-border);
+}
+
+body.professional-theme .header {
+    background: var(--prof-bg);
+    color: var(--prof-text);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--prof-border);
+    border-radius: 0;
+}
+
+body.professional-theme .header h1 {
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--prof-text);
+}
+
+body.professional-theme .header::before {
+    display: none;
+}
+
+body.professional-theme .chat-container {
+    background-color: var(--prof-bg);
+    border: 1px solid var(--prof-border);
+    box-shadow: none;
+    border-radius: 0;
+}
+
+body.professional-theme .question {
+    background-color: var(--prof-light-gray);
+    color: var(--prof-text);
+    border-left: 2px solid var(--prof-primary);
+    border-radius: 0;
+    box-shadow: none;
+    font-family: 'Poppins', sans-serif;
+    animation: none;
+}
+
+body.professional-theme .answer {
+    background-color: #fafafa;
+    color: var(--prof-text);
+    border-left: 2px solid var(--prof-secondary);
+    border-radius: 0;
+    box-shadow: none;
+    font-family: 'Poppins', sans-serif;
+    animation: none;
+}
+
+body.professional-theme .card-header {
+    background-color: var(--prof-bg);
+    color: var(--prof-text);
+    border-bottom: 1px solid var(--prof-border);
+    text-shadow: none;
+    padding: 1rem 1.5rem;
+}
+
+body.professional-theme .btn-primary {
+    background-color: var(--prof-primary);
+    border-color: var(--prof-primary);
+    border-radius: 0;
+    box-shadow: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 12px 25px;
+}
+
+body.professional-theme .btn-primary:hover {
+    background-color: var(--prof-secondary);
+    border-color: var(--prof-secondary);
+    transform: none;
+    box-shadow: none;
+}
+
+body.professional-theme .btn-primary::after {
+    display: none;
+}
+
+body.professional-theme .message-avatar {
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid var(--prof-border);
+}
+
+body.professional-theme .user-avatar {
+    background-color: var(--prof-primary);
+}
+
+body.professional-theme .ai-avatar {
+    background-color: var(--prof-secondary);
+}
+
+body.professional-theme .form-control {
+    border-radius: 0;
+    border: 1px solid var(--prof-border);
+    background-color: var(--prof-bg);
+    color: var(--prof-text);
+    box-shadow: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+body.professional-theme .form-control:focus {
+    border-color: var(--prof-primary);
+    box-shadow: none;
+}
+
+body.professional-theme .input-section {
+    background-color: transparent;
+    border: 1px solid var(--prof-border);
+    box-shadow: none;
+    padding: 20px;
+}
+
+body.professional-theme .text-muted {
+    color: var(--prof-secondary) !important;
+    text-shadow: none;
+}
+
+body.professional-theme .timestamp {
+    color: #888;
+    text-shadow: none;
+}
+
+body.professional-theme .formatted-text strong {
+    color: var(--prof-primary);
+    text-shadow: none;
+    font-weight: 600;
+}
+
+/* Tema profesional modo oscuro */
+body.professional-theme.dark-mode {
+    --prof-primary: #ffffff;
+    --prof-secondary: #cccccc;
+    --prof-accent: #999999;
+    --prof-bg: #121212;
+    --prof-text: #ffffff;
+    --prof-light-gray: #1e1e1e;
+    --prof-border: #333333;
+    --light-bg: var(--prof-bg);
+    color: var(--prof-text);
+}
+
+body.professional-theme.dark-mode .card {
+    background-color: #1a1a1a;
+}
+
+body.professional-theme.dark-mode .header {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border-color: #333;
+}
+
+body.professional-theme.dark-mode .chat-container {
+    background-color: #1a1a1a;
+}
+
+body.professional-theme.dark-mode .card-header {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border-color: #333;
+}
+
+body.professional-theme.dark-mode .question {
+    background-color: #222;
+    color: #ffffff;
+    border-color: var(--prof-primary);
+}
+
+body.professional-theme.dark-mode .answer {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-color: var(--prof-secondary);
+}
+
+body.professional-theme.dark-mode .form-control {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+body.professional-theme.dark-mode .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+body.professional-theme.dark-mode .input-section {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 0;
+}
+
+body.professional-theme.dark-mode .formatted-text strong {
+    color: var(--prof-primary);
+}
+
+body.professional-theme.dark-mode label {
+    color: #ffffff !important;
+    font-weight: 600;
+    opacity: 0.95;
+}
+
+body.professional-theme.dark-mode .text-muted {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+body.professional-theme.dark-mode .btn-primary {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+    font-weight: 600;
+}
+
+body.professional-theme.dark-mode .btn-primary:hover {
+    background-color: #cccccc;
+    border-color: #cccccc;
+}
+
+/* Personalización de la barra de desplazamiento para tema profesional */
+body.professional-theme ::-webkit-scrollbar {
+    width: 6px;
+}
+
+body.professional-theme ::-webkit-scrollbar-track {
+    background: var(--prof-light-gray);
+    border-radius: 0;
+}
+
+body.professional-theme ::-webkit-scrollbar-thumb {
+    background: var(--prof-secondary);
+    border-radius: 0;
+}
+
+body.professional-theme ::-webkit-scrollbar-thumb:hover {
+    background: var(--prof-primary);
+}
+
+/* Botones del header en tema profesional */
+body.professional-theme .card-header .btn-outline-light {
+    border-color: var(--prof-border);
+    color: var(--prof-text);
+    background-color: transparent;
+    border-radius: 0;
+    text-shadow: none;
+    box-shadow: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+body.professional-theme .card-header .btn-outline-light:hover {
+    background-color: var(--prof-primary);
+    color: var(--prof-bg);
+    border-color: var(--prof-primary);
+    transform: none;
+    box-shadow: none;
+}
+
+body.professional-theme .card-header .badge {
+    background-color: var(--prof-light-gray) !important;
+    color: var(--prof-text) !important;
+    border: 1px solid var(--prof-border);
+    border-radius: 0;
+    box-shadow: none;
+    font-weight: 500;
+    text-shadow: none;
+}
+
+body.professional-theme.dark-mode .card-header .badge {
+    background-color: #333 !important;
+    color: #fff !important;
+}
+
+body.professional-theme.dark-mode .card-header .btn-outline-light {
+    border-color: #444;
+    color: #fff;
+}
+
+body.professional-theme.dark-mode .card-header .btn-outline-light:hover {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+/* Estilo para los botones de theme switch en tema profesional */
+body.professional-theme .theme-switch,
+body.professional-theme .style-switch {
+    color: var(--prof-text);
+    text-shadow: none;
+}
+
+body.professional-theme.dark-mode .theme-switch,
+body.professional-theme.dark-mode .style-switch {
+    color: var(--prof-primary);
+}
+
+/* Corregir el color del texto en la cabecera para tema profesional */
+body.professional-theme .card-header h5 {
+    color: var(--prof-text);
+}
+
+/* Corregir contraste en botones de la cabecera para tema profesional */
+body.professional-theme .card-header .btn-outline-light {
+    border-color: var(--prof-primary);
+    color: var(--prof-primary);
+    background-color: transparent;
+    border-radius: 0;
+    text-shadow: none;
+    box-shadow: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Mejorar visibilidad del texto en los avatares para tema profesional */
+body.professional-theme .message-avatar.user-avatar,
+body.professional-theme .message-avatar.ai-avatar {
+    color: white !important;
+}
+
+/* Ajustar color de texto en botones de cabecera al hacer hover */
+body.professional-theme .card-header .btn-outline-light:hover {
+    background-color: var(--prof-primary);
+    color: white;
+    border-color: var(--prof-primary);
+    transform: none;
+    box-shadow: none;
+}
+
+/* Modal en tema profesional */
+body.professional-theme .modal-content {
+    border-radius: 0;
+    border: 1px solid var(--prof-border);
+}
+
+body.professional-theme .modal-header {
+    background-color: var(--prof-light-gray);
+    color: var(--prof-text);
+    border-bottom: 1px solid var(--prof-border);
+    border-radius: 0;
+}
+
+body.professional-theme .modal-footer {
+    border-top: 1px solid var(--prof-border);
+}
+
+body.professional-theme .table {
+    color: var(--prof-text);
+}
+
+body.professional-theme.dark-mode .modal-content {
+    background-color: #1a1a1a;
+}
+
+body.professional-theme.dark-mode .modal-header {
+    background-color: #222;
+    border-color: #444;
+}
+
+body.professional-theme.dark-mode .modal-footer {
+    border-color: #444;
+}
+
+body.professional-theme.dark-mode .table {
+    color: #fff;
+}
+
+/* ===================================
+   SELECTORES DE TEMA
+   =================================== */
+/* Botón para alternar tema (cyberpunk/profesional) */
+.style-switch {
+    position: absolute;
+    right: 60px;
+    top: 20px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: white;
+    z-index: 100;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+.professional-theme .style-switch,
+.professional-theme .theme-switch {
+    color: white;
+    text-shadow: none;
+}
+
+/* ===================================
+   ESTILOS PARA MODO OSCURO
+   =================================== */
+body.dark-mode {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+}
+
+/* Fondo de tarjeta en modo oscuro */
+body.dark-mode .card {
+    background-color: #222;
+}
+
+/* Contenedor de chat en modo oscuro */
+body.dark-mode .chat-container {
+    background-color: #222;
+}
+
+/* Campo de entrada en modo oscuro */
+body.dark-mode .form-control {
+    background-color: #333;
+    color: #f0f0f0;
+    border-color: #444;
+}
+
+/* Mensajes del usuario en modo oscuro */
+body.dark-mode .question {
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+}
+
+/* Respuestas del modelo en modo oscuro */
+body.dark-mode .answer {
+    background-color: #2d4a5d;
+    color: #f0f0f0;
+}
+
+/* Texto secundario en modo oscuro */
+body.dark-mode .text-muted {
+    color: #aaa !important;
+}
+
+/* Etiquetas en modo oscuro */
+body.dark-mode label {
+    color: #e0e0e0 !important;
+    font-weight: 500;
+}
+
+/* Texto de placeholder en modo oscuro */
+body.dark-mode .form-control::placeholder {
+    color: #aaa;
+}
+
+/* Sección de entrada en modo oscuro */
+body.dark-mode .input-section {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* ===================================
+   ANIMACIONES
+   =================================== */
+/* Animación para nuevos mensajes */
+.new-message {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Keyframes para la animación de aparición */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animación de pulso para el botón de enviar */
+.btn-primary:active {
+    animation: pulse 0.3s ease-in-out;
+}
+
+/* Keyframes para la animación de pulso */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* ===================================
+   ESTILOS RESPONSIVOS
+   =================================== */
+@media (max-width: 576px) {
+    /* Ajuste de tamaño de título para pantallas pequeñas */
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    /* Ajuste de padding para pantallas pequeñas */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* ===================================
+   PERSONALIZACIÓN DE SCROLLBAR
+   =================================== */
+/* Ancho de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Fondo de la barra de desplazamiento */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+/* Estilo del "pulgar" de la barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+/* Estilo al pasar el cursor sobre la barra de desplazamiento */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* ===================================
+   TOOLTIPS Y AYUDAS VISUALES
+   =================================== */
+/* Contenedor de tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Texto del tooltip */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: var(--accent-color);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Mostrar tooltip al pasar el cursor */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ===================================
+   EFECTOS DE ENTRADA DE TEXTO
+   =================================== */
+/* Contenedor de entrada con efecto de línea */
+.input-container {
+    position: relative;
+}
+
+/* Efecto de línea debajo del campo de entrada */
+.input-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+/* Animación al enfocar el campo de entrada */
+.input-container:focus-within::after {
+    width: 100%;
+}
+
+/* ===================================
+   FORMATO DE TEXTO
+   =================================== */
+/* Estilo para texto en negrita formateado */
+.formatted-text strong {
+    font-weight: 700;
+}
+
+/* Estilo para texto en negrita en modo oscuro */
+body.dark-mode .formatted-text strong {
+    color: #ffffff;
+}
+
+/* ===================================
+   MODAL DE BASE DE DATOS
+   =================================== */
+/* Contenedor del modal */
+.modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* Cabecera del modal */
+.modal-header {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Tablas en el modal */
+.table {
+    margin-bottom: 0;
+}
+
+/* Celdas de la tabla */
+.table td {
+    vertical-align: middle;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Expansión de celdas al pasar el cursor */
+.table td:hover {
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* ===================================
+   MODAL EN MODO OSCURO
+   =================================== */
+/* Fondo del modal en modo oscuro */
+body.dark-mode .modal-content {
+    background-color: #222;
+    color: #f0f0f0;
+}
+
+/* Cabecera del modal en modo oscuro */
+body.dark-mode .modal-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-bottom-color: #444;
+}
+
+/* Pie del modal en modo oscuro */
+body.dark-mode .modal-footer {
+    border-top-color: #444;
+}
+
+/* Tabla en modo oscuro */
+body.dark-mode .table {
+    color: #f0f0f0;
+}
+
+/* Filas alternadas en modo oscuro */
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Efecto hover en filas en modo oscuro */
+body.dark-mode .table-hover > tbody > tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===================================
+   BOTONES DE CABECERA
+   =================================== */
+/* Estilo de botones en la cabecera */
+.card-header .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+}
+
+/* Efecto hover en botones de cabecera */
+.card-header .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto al presionar botones de cabecera */
+.card-header .btn-outline-light:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Estilo para la insignia de conteo */
+.card-header .badge {
+    border-radius: 12px;
+    padding: 0.45rem 0.8rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-container {
+    height: 60vh;
+    overflow-y: auto;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: rgba(13, 11, 30, 0.7);
+    box-shadow: 0 4px 15px rgba(0, 243, 255, 0.2);
+    border: 1px solid var(--primary-color);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 25px rgba(0, 243, 255, 0.3);
+    overflow: hidden;
+    background-color: rgba(13, 2, 33, 0.8);
+    border: 1px solid var(--primary-color);
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    background: linear-gradient(90deg, rgba(13, 11, 30, 0.9), rgba(0, 243, 255, 0.2));
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.card-header .btn-outline-light {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.card-header .btn-outline-light:hover {
+    background-color: rgba(0, 243, 255, 0.3);
+    border-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.card-header .badge {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.question {
+    background-color: rgba(255, 0, 221, 0.2);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    position: relative;
+    animation: slideInRight 0.3s ease-out;
+    transform-origin: top right;
+    box-shadow: 0 2px 10px rgba(255, 0, 221, 0.3);
+    border-left: 3px solid var(--secondary-color);
+    color: white;
+}
+
+.answer {
+    background-color: rgba(0, 243, 255, 0.2);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    animation: slideInLeft 0.3s ease-out;
+    transform-origin: top left;
+    box-shadow: 0 2px 10px rgba(0, 243, 255, 0.3);
+    border-left: 3px solid var(--primary-color);
+    color: white;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.timestamp {
+    font-size: 0.8rem;
+    color: var(--cyber-yellow);
+    margin-top: 5px;
+    text-shadow: 0 0 5px rgba(255, 218, 0, 0.5);
+}
+
+.form-control {
+    border-radius: 0;
+    padding: 12px 20px;
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+    background-color: rgba(13, 11, 30, 0.8);
+    color: white;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px rgba(255, 0, 221, 0.5);
+    background-color: rgba(13, 11, 30, 0.9);
+}
+
+/* ===================================
+   ELEMENTOS DE INTERFAZ
+   =================================== */
+
+.container {
+    max-width: 1000px;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: black;
+    padding: 2rem 0;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 243, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--primary-color);
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: cyber-scan 3s linear infinite;
+}
+
+.chat-container {
+    height: 60vh;
+    overflow-y: auto;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: rgba(13, 11, 30, 0.7);
+    box-shadow: 0 4px 15px rgba(0, 243, 255, 0.2);
+    border: 1px solid var(--primary-color);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 25px rgba(0, 243, 255, 0.3);
+    overflow: hidden;
+    background-color: rgba(13, 2, 33, 0.8);
+    border: 1px solid var(--primary-color);
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    background: linear-gradient(90deg, rgba(13, 11, 30, 0.9), rgba(0, 243, 255, 0.2));
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.card-header .btn-outline-light {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.card-header .btn-outline-light:hover {
+    background-color: rgba(0, 243, 255, 0.3);
+    border-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.card-header .badge {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* ===================================
+   ESTILOS DE MENSAJES
+   =================================== */
+
+.question {
+    background-color: rgba(255, 0, 221, 0.2);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    position: relative;
+    animation: slideInRight 0.3s ease-out;
+    transform-origin: top right;
+    box-shadow: 0 2px 10px rgba(255, 0, 221, 0.3);
+    border-left: 3px solid var(--secondary-color);
+    color: white;
+}
+
+.answer {
+    background-color: rgba(0, 243, 255, 0.2);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    animation: slideInLeft 0.3s ease-out;
+    transform-origin: top left;
+    box-shadow: 0 2px 10px rgba(0, 243, 255, 0.3);
+    border-left: 3px solid var(--primary-color);
+    color: white;
+}
+
+.timestamp {
+    font-size: 0.8rem;
+    color: var(--cyber-yellow);
+    margin-top: 5px;
+    text-shadow: 0 0 5px rgba(255, 218, 0, 0.5);
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid currentColor;
+    box-shadow: 0 0 10px currentColor;
+}
+
+.user-avatar {
+    background-color: var(--secondary-color);
+    color: black;
+}
+
+.ai-avatar {
+    background-color: var(--primary-color);
+    color: black;
+}
+
+.message-content {
+    flex: 1;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* ===================================
+   FORMULARIOS Y BOTONES
+   =================================== */
+
+.form-control {
+    border-radius: 0;
+    padding: 12px 20px;
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+    background-color: rgba(13, 11, 30, 0.8);
+    color: white;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px rgba(255, 0, 221, 0.5);
+    background-color: rgba(13, 11, 30, 0.9);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 0;
+    padding: 10px 25px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    color: black;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(30deg);
+    transition: all 0.3s;
+    opacity: 0;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 0, 221, 0.5);
+    color: white;
+}
+
+.btn-primary:hover::after {
+    opacity: 1;
+}
+
+.input-section {
+    background-color: rgba(13, 11, 30, 0.7);
+    padding: 15px;
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+/* ===================================
+   ANIMACIONES
+   =================================== */
+
+@keyframes cyber-scan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===================================
+   INDICADOR DE TIPEO
+   =================================== */
+
+.typing-indicator {
+    display: none;
+    padding: 15px;
+    background-color: rgba(0, 243, 255, 0.2);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.typing-indicator span {
+    height: 8px;
+    width: 8px;
+    float: left;
+    margin: 0 1px;
+    background-color: var(--primary-color);
+    display: block;
+    border-radius: 50%;
+    opacity: 0.7;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.typing-indicator span:nth-of-type(1) {
+    animation: cyber-typing 1s infinite;
+}
+
+.typing-indicator span:nth-of-type(2) {
+    animation: cyber-typing 1s 0.25s infinite;
+}
+
+.typing-indicator span:nth-of-type(3) {
+    animation: cyber-typing 1s 0.5s infinite;
+}
+
+@keyframes cyber-typing {
+    0% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+        box-shadow: 0 0 20px var(--primary-color);
+    }
+    100% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+}
+
+/* ===================================
+   TEMA OSCURO
+   =================================== */
+
+.theme-switch {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: black;
+    z-index: 100;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+/* ===================================
+   ESTILOS RESPONSIVOS
+   =================================== */
+
+@media (max-width: 768px) {
+    .header {
+        padding: 1.5rem 0;
+    }
+    
+    .chat-container {
+        height: 50vh;
+    }
+    
+    .btn-primary {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+/* ===================================
+   ESTILOS DE LA BARRA DE DESPLAZAMIENTO
+   =================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(13, 11, 30, 0.9);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--primary-color), var(--secondary-color));
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* ===================================
+   ESTILOS DE TEXTO FORMATEADO
+   =================================== */
+
+.formatted-text strong {
+    color: var(--cyber-yellow);
+    text-shadow: 0 0 5px var(--cyber-yellow);
+}
+
+.text-muted {
+    color: var(--cyber-yellow) !important;
+    text-shadow: 0 0 5px rgba(255, 218, 0, 0.3);
+} 
