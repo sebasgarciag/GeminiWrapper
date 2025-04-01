@@ -1,26 +1,40 @@
-FROM eclipse-temurin:17-jdk as build
-WORKDIR /workspace/app
+# Etapa de construcción
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
 
+# Copiar archivos de configuración de Maven
+COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
-COPY pom.xml .
+
+# Descargar dependencias
+RUN mvn dependency:go-offline
+
+# Copiar código fuente
 COPY src src
 
-RUN ./mvnw package -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+# Construir la aplicación
+RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:17-jre
-VOLUME /tmp
-ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+# Etapa de ejecución
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
 
+# Copiar el JAR construido
+COPY --from=build /app/target/*.jar app.jar
+
+# Variables de entorno
 ENV GEMINI_API_KEY=your_api_key
 ENV SPRING_DATASOURCE_URL=jdbc:h2:file:/data/geminidb
+ENV DB_USERNAME=sa
+ENV DB_PASSWORD=password
 
-# Create data directory for persistent H2 database
+# Crear directorio para la base de datos
 RUN mkdir -p /data
 VOLUME /data
 
-ENTRYPOINT ["java", "-cp", "app:app/lib/*", "-Dgemini.api.key=${GEMINI_API_KEY}", "com.project.wrappergemini.WrapperGeminiApplication"] 
+# Exponer puerto
+EXPOSE 8080
+
+# Comando para ejecutar la aplicación
+ENTRYPOINT ["java", "-jar", "app.jar"] 

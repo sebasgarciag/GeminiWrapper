@@ -1,4 +1,4 @@
-# Spring Boot Gemini AI Wrapper byyyy sebas 
+# Spring Boot Gemini AI Wrapper by Sebastian Garcia
 
 Una aplicación Spring Boot que sirve como wrapper para Google Gemini AI, proporcionando una interfaz de usuario para interactuar con Gemini AI, almacenar el historial de conversaciones y gestionar las respuestas de la API.
 
@@ -74,6 +74,7 @@ Una aplicación Spring Boot que sirve como wrapper para Google Gemini AI, propor
      # Base de Datos H2 (Opcional)
      DB_USERNAME=sa          # Usuario por defecto si no se especifica
      DB_PASSWORD=password    # Contraseña por defecto si no se especifica
+     DB_PATH=./data/geminidb  # Ruta por defecto para la base de datos
      ```
 
 3. **Importante:** 
@@ -218,6 +219,18 @@ La configuración de volúmenes (`volumes`) en el docker-compose.yml permite que
   - Todos los datos de la base H2 se guardan en tu máquina
   - Al reiniciar el contenedor, los datos están disponibles automáticamente
 
+- **Configuración de la ruta de la base de datos**:
+  - La aplicación permite configurar la ubicación de la base de datos H2 mediante la variable `DB_PATH`
+  - Esta variable puede establecerse en el archivo `.env`
+  - Los valores por defecto son:
+    - Ejecución local: `./data/geminidb`
+    - Docker: `/data/geminidb`
+  - Esta flexibilidad permite:
+    - Cambiar la ubicación de la base de datos sin modificar el código
+    - Usar diferentes bases de datos para diferentes entornos
+    - Facilitar copias de seguridad apuntando a directorios específicos
+    - Compartir la base de datos entre múltiples instancias
+
 - **Beneficios:**
   - Seguridad: los datos están separados del contenedor
   - Facilidad de backup: solo hay que copiar el directorio local
@@ -264,12 +277,31 @@ Para acceder a la consola H2 cuando la aplicación está en Docker:
 ## Estructura del Proyecto
 
 ```
-src/main/java/com/project/wrappergemini/
-├── controller/            # Controladores REST
-├── model/                 # Clases de entidad
-├── repository/            # Interfaces de acceso a datos
-├── service/               # Lógica de negocio
-└── WrapperGeminiApplication.java  # Clase principal
+src/
+├── main/
+│   ├── java/com/project/wrappergemini/
+│   │   ├── controller/       # Controladores de la aplicación
+│   │   │   └── GeminiController.java
+│   │   ├── model/           # Entidades y DTOs
+│   │   │   ├── Conversation.java
+│   │   │   ├── ConversationDTO.java
+│   │   │   ├── GeminiRequest.java
+│   │   │   └── GeminiResponse.java
+│   │   ├── repository/      # Repositorios de datos
+│   │   │   └── ConversationRepository.java
+│   │   ├── service/         # Lógica de negocio
+│   │   │   └── GeminiService.java
+│   │   └── WrapperGeminiApplication.java
+│   └── resources/
+│       ├── static/          # Recursos estáticos (CSS, JS, imágenes)
+│       │   ├── css/
+│       │   │   └── styles.css
+│       │   └── js/
+│       │       └── main.js
+│       ├── templates/       # Plantillas Thymeleaf
+│       │   ├── index.html
+│       │   └── error.html
+│       └── application.properties
 ```
 
 ## Tecnologías Utilizadas
@@ -288,8 +320,228 @@ src/main/java/com/project/wrappergemini/
 
 - **Thymeleaf**: Motor de plantillas seleccionado por su integración nativa con Spring y capacidad para crear prototipos HTML que pueden verse sin servidor, facilitando el desarrollo frontend.
 
+- **Spring Web**: Proporciona las dependencias necesarias para crear aplicaciones web con Spring MVC, incluyendo servlets, servidores web y configuración básica.
+
+- **Spring Boot DevTools**: Herramientas de desarrollo que mejoran la experiencia de desarrollo con:
+  - Recarga automática de cambios
+  - Reinicio automático de la aplicación
+  - Configuración de propiedades por defecto optimizadas para desarrollo
+
+- **Spring Dotenv**: Permite cargar variables de entorno desde archivos `.env`, facilitando la gestión de configuraciones sensibles y específicas del entorno.
+
+- **Lombok**: Reduce el código boilerplate mediante anotaciones que generan automáticamente getters, setters, constructores y otros métodos comunes.
+
+- **JUnit y Mockito**: Frameworks de testing que permiten:
+  - Escritura de pruebas unitarias
+  - Mocking de dependencias
+  - Verificación de comportamiento
+  - Cobertura de código
+
+- **JaCoCo**: Herramienta de análisis de cobertura de código para Java que:
+  - Genera informes detallados de cobertura
+  - Permite identificar código no probado
+  - Integra métricas de calidad en el proceso de build
+  - Ofrece visualizaciones intuitivas mediante informes HTML
+
 - **Bootstrap 5**: Framework CSS utilizado para obtener una interfaz responsiva y moderna con mínimo esfuerzo, proporcionando componentes prediseñados y un sistema de rejilla flexible.
 
 - **Font Awesome**: Biblioteca de iconos vectoriales que mejora la experiencia visual y la usabilidad de la interfaz con símbolos reconocibles e intuitivos.
 
-- **API de Google Gemini**: Motor de IA seleccionado por su potente capacidad para generar texto coherente y contextualmente relevante, permitiendo una interacción natural con los usuarios. 
+- **API de Google Gemini**: Motor de IA seleccionado por su potente capacidad para generar texto coherente y contextualmente relevante, permitiendo una interacción natural con los usuarios.
+
+## Mejoras Recientes
+
+### 1. Pruebas Unitarias
+- Se han agregado pruebas unitarias para los componentes principales:
+  - `GeminiServiceTest`: Prueba la lógica de negocio y la integración con la API
+  - `GeminiControllerTest`: Prueba los endpoints y el manejo de solicitudes
+  - `WrapperGeminiApplicationTests`: Prueba la carga correcta del contexto de Spring
+- Las pruebas cubren:
+  - Validación de entrada
+  - Manejo de errores
+  - Integración con la base de datos
+  - Respuestas de la API
+- Se ha implementado JaCoCo para análisis de cobertura de código
+- Todos los tests están documentados con Javadoc
+
+### 2. Implementación de DTOs
+- Creación de tres DTOs principales para mejorar la arquitectura:
+  - `ConversationDTO`: Para transferir datos de conversaciones
+  - `GeminiRequest`: Para estructurar peticiones a la API
+  - `GeminiResponse`: Para deserializar respuestas de la API
+- Mejora en la organización del código con separación clara de responsabilidades
+- Configuración de ObjectMapper para manejar propiedades desconocidas
+- Documentación completa de todos los DTOs
+
+### 3. Validación de Tamaño de Solicitud
+- Se ha implementado un límite máximo de caracteres para las preguntas
+- El límite actual es de 30,000 caracteres
+- Se proporcionan mensajes de error claros cuando se excede el límite
+- Mejora la estabilidad y previene errores en la API
+
+### 4. Optimización del Dockerfile
+- Implementación de multi-stage build para reducir el tamaño final de la imagen
+- Uso de la imagen oficial de Maven para la construcción
+- Imagen base más ligera (eclipse-temurin:17-jre-alpine)
+- Mejor manejo de dependencias y caché de Maven
+- Configuración más limpia y mantenible
+
+### 5. Gestión Mejorada de Configuración
+- Todas las configuraciones sensibles ahora usan variables de entorno
+- Valores por defecto seguros para todas las configuraciones
+- Mejor documentación de las variables de entorno
+- Introducción de la variable `DB_PATH` para configurar la ubicación de la base de datos
+- Mayor flexibilidad para diferentes entornos de despliegue
+
+### 6. Manejo de Errores
+- Mejora en la captura y gestión de excepciones
+- Mensajes de error más descriptivos y útiles
+- Validación robusta de entrada de usuario
+- Manejo graceful de errores de la API de Gemini
+- Configuración del ObjectMapper para ignorar propiedades desconocidas en respuestas API
+
+### 7. Documentación Mejorada
+- Documentación exhaustiva de código con Javadoc
+- Ampliación del README con detalles de implementación
+- Sección de pruebas detallada
+- Documentación de la arquitectura en capas y patrón DTO
+- Traducción de documentación a español
+- Documentación mejorada para desarrolladores
+
+## Testing y Control de Calidad
+
+### Ejecución de Tests
+
+Los tests se pueden ejecutar de varias formas:
+
+1. **Usando Maven desde la terminal:**
+   ```bash
+   # Ejecutar todos los tests
+   ./mvnw test
+
+   # Ejecutar tests con cobertura
+   ./mvnw test jacoco:report
+
+   # Ejecutar un test específico
+   ./mvnw test -Dtest=GeminiControllerTest
+
+   # Ejecutar un método de test específico
+   ./mvnw test -Dtest=GeminiControllerTest#testAskGemini
+   ```
+
+2. **Desde el IDE (IntelliJ IDEA):**
+   - Click derecho en la carpeta `src/test/java`
+   - Seleccionar "Run Tests in 'wrapperGemini'"
+   - O para un test específico:
+     - Click derecho en la clase de test
+     - Seleccionar "Run '[TestClassName]'"
+     - O para un método específico:
+       - Click en el ícono verde junto al método
+       - Seleccionar "Run '[testMethodName]()'"
+
+3. **Durante el build:**
+   ```bash
+   # Los tests se ejecutan automáticamente al hacer build
+   ./mvnw clean package
+   ```
+
+### Estructura de los Tests
+
+El proyecto incluye tests unitarios para los componentes principales:
+
+1. **GeminiControllerTest:**
+   - `testHomePage()`: Verifica la carga correcta de la página principal
+   - `testAskGemini()`: Verifica el procesamiento de preguntas
+
+2. **GeminiServiceTest:**
+   - `testGenerateResponse_ValidInput()`: Verifica respuestas válidas
+   - `testGenerateResponse_EmptyInput()`: Verifica manejo de entradas vacías
+   - `testGenerateResponse_NullInput()`: Verifica manejo de entradas nulas
+   - `testGetConversationHistory()`: Verifica recuperación del historial
+
+### Patrón de Testing
+
+Los tests siguen el patrón AAA (Arrange-Act-Assert):
+
+1. **Arrange:** Prepara los datos y mocks necesarios
+2. **Act:** Ejecuta la acción a probar
+3. **Assert:** Verifica que el resultado es el esperado
+
+### Cobertura de Tests
+
+Para ver la cobertura de tests:
+1. Ejecuta `./mvnw test jacoco:report`
+2. Abre `target/site/jacoco/index.html` en tu navegador 
+
+### Resultados Detallados de los Tests
+
+Maven almacena los resultados detallados de la ejecución de tests en el directorio `target/surefire-reports`. Estos archivos contienen información detallada sobre cada test ejecutado, incluyendo:
+
+- **Archivos XML**: Contienen los resultados en formato XML para integración con herramientas CI/CD
+  - Ubicación: `target/surefire-reports/*.xml`
+  
+- **Archivos de Texto**: Proporcionan un resumen legible de cada test ejecutado
+  - Ubicación: `target/surefire-reports/*.txt`
+  
+- **Información de Fallos**: Si un test falla, estos archivos incluyen:
+  - Mensaje de error detallado
+  - Traza de la pila de llamadas
+  - Valores esperados vs. valores obtenidos
+  
+Para explorar estos resultados:
+```bash
+# Ver archivos de reportes de tests
+dir target\surefire-reports
+
+# Ver el contenido de un reporte específico (ejemplo)
+type target\surefire-reports\com.project.wrappergemini.service.GeminiServiceTest.txt
+```
+
+## Patrón DTO y Arquitectura en Capas
+
+### ¿Qué son los DTOs?
+
+Los DTOs (Data Transfer Objects) son objetos utilizados para transferir datos entre subsistemas de una aplicación. En este proyecto, se utilizan para:
+
+1. **Separar las capas de la aplicación:**
+   - Desacoplar la capa de persistencia (entidades) de la capa de presentación (vistas)
+   - Facilitar la evolución independiente de cada capa
+
+2. **Controlar la transferencia de datos:**
+   - Exponer solo los datos necesarios para cada operación
+   - Prevenir la exposición accidental de datos sensibles
+   - Optimizar la cantidad de datos transferidos
+
+3. **Mejorar la seguridad:**
+   - Evitar vulnerabilidades como mass assignment
+   - Validar datos de entrada con anotaciones específicas
+   - Implementar transformaciones seguras de datos
+
+### DTOs en este proyecto
+
+La aplicación utiliza tres DTOs principales:
+
+1. **ConversationDTO:**
+   - Traslada información de conversaciones entre el controlador y la vista
+   - Separa la entidad de persistencia de los datos mostrados al usuario
+   - Facilita la presentación y manipulación de conversaciones en la interfaz
+
+2. **GeminiRequest:**
+   - Estructura exacta para construir peticiones a la API de Gemini
+   - Configuración de parámetros de generación (temperatura, topP, etc.)
+   - Facilita la serialización correcta al formato JSON esperado por la API
+
+3. **GeminiResponse:**
+   - Deserializa correctamente las respuestas de la API
+   - Maneja variantes y campos opcionales de la respuesta
+   - Permite extraer fácilmente el texto generado
+
+### Beneficios obtenidos
+
+La implementación de DTOs ha proporcionado:
+
+- **Mejor mantenibilidad:** Los cambios en entidades no afectan a la interfaz y viceversa
+- **Mayor flexibilidad:** Cada DTO puede adaptarse a requisitos específicos
+- **Mejor rendimiento:** Solo se transfieren los datos necesarios
+- **Seguridad mejorada:** Control preciso sobre los datos expuestos
+- **Validación específica:** Cada DTO implementa sus propias reglas de validación 
